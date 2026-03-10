@@ -23,7 +23,7 @@ export async function getMyAssignments(
     .from('ta_assignments')
     .select(`
       id, hours, assigned_at,
-      tas(id, email, full_name, ta_type),
+      tas!inner(id, email, full_name, ta_type),
       sections(
         id, crn, section_code, meeting_days, meeting_times, meeting_time_start, meeting_time_end,
         enrollment,
@@ -34,7 +34,7 @@ export async function getMyAssignments(
       )
     `)
     .eq('tas.email', email)
-    .order('sections.semester_id')
+    .order('id', { ascending: false })
 
   if (error) throw new Error(error.message)
   return data ?? []

@@ -86,14 +86,14 @@ export default function CourseSearchPage() {
       </form>
 
       {loading && (
-        <div className="flex items-center gap-2 text-gray-400 text-sm">
+        <div className="flex items-center gap-2 text-gray-500 text-sm">
           <Spinner size="sm" /> Searching...
         </div>
       )}
 
       {!loading && searched && results !== null && (
         results.length === 0 ? (
-          <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-400">
+          <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-500">
             No sections found for {subject.toUpperCase()} {courseNumber}.
           </div>
         ) : (

@@ -16,7 +16,7 @@ interface Props {
 export default function EnrollmentCompareTable({ data }: Props) {
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-10 text-center text-gray-400">
+      <div className="bg-white rounded-xl border border-gray-200 p-10 text-center text-gray-500">
         No enrollment comparison data available.
       </div>
     )

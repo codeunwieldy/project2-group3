@@ -21,7 +21,7 @@ export default function WorkloadReport({ data }: Props) {
 
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-10 text-center text-gray-400">
+      <div className="bg-white rounded-xl border border-gray-200 p-10 text-center text-gray-500">
         No workload data available.
       </div>
     )
@@ -43,7 +43,7 @@ export default function WorkloadReport({ data }: Props) {
           { label: 'Total TA Hours', value: totalTAHours },
         ].map(stat => (
           <div key={stat.label} className="bg-white rounded-xl border border-gray-200 p-4">
-            <p className="text-xs text-gray-400">{stat.label}</p>
+            <p className="text-xs text-gray-500">{stat.label}</p>
             <p className="text-2xl font-bold text-gray-900">{stat.value.toLocaleString()}</p>
           </div>
         ))}

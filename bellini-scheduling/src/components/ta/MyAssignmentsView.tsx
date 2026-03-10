@@ -48,7 +48,7 @@ export default function MyAssignmentsView({ initialAssignments, userEmail }: Pro
   if (assignments.length === 0) {
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-10 text-center">
-        <p className="text-gray-400">No TA assignments found for your account.</p>
+        <p className="text-gray-500">No TA assignments found for your account.</p>
         <p className="text-xs text-gray-300 mt-1">{userEmail}</p>
       </div>
     )
@@ -95,7 +95,7 @@ export default function MyAssignmentsView({ initialAssignments, userEmail }: Pro
                 </td>
                 <td className="px-4 py-3 text-gray-600">{a.section.instructor_name ?? '—'}</td>
                 <td className="px-4 py-3 text-right font-semibold">{a.hours}</td>
-                <td className="px-4 py-3 text-xs text-gray-400">
+                <td className="px-4 py-3 text-xs text-gray-500">
                   {new Date(a.assigned_at).toLocaleDateString()}
                 </td>
               </tr>

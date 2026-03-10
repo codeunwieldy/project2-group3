@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { Spinner } from '@/components/ui/Spinner'
 
 interface HeatmapCell {
@@ -117,13 +117,13 @@ export default function RoomHeatmap({ semesters, rooms }: Props) {
       </div>
 
       {loading && (
-        <div className="flex items-center gap-2 text-gray-400 text-sm">
+        <div className="flex items-center gap-2 text-gray-500 text-sm">
           <Spinner size="sm" /> Loading heatmap...
         </div>
       )}
 
       {!loading && data.length === 0 && selectedRoom && selectedSemester && (
-        <div className="bg-gray-50 rounded-xl border border-gray-200 p-8 text-center text-gray-400">
+        <div className="bg-gray-50 rounded-xl border border-gray-200 p-8 text-center text-gray-500">
           No scheduled sections found for this room/semester combination.
         </div>
       )}
@@ -132,7 +132,7 @@ export default function RoomHeatmap({ semesters, rooms }: Props) {
         <div className="bg-white rounded-xl border border-gray-200 p-4 overflow-auto">
           <div className="inline-grid gap-0.5" style={{ gridTemplateColumns: `64px repeat(${DAYS.length}, minmax(64px, 1fr))` }}>
             {/* Header row */}
-            <div className="text-xs text-gray-400 py-1 pr-2 text-right font-medium">Time</div>
+            <div className="text-xs text-gray-500 py-1 pr-2 text-right font-medium">Time</div>
             {DAYS.map(day => (
               <div key={day} className="text-xs font-medium text-center text-gray-600 py-1">
                 {DAY_LABELS[day]}
@@ -141,8 +141,8 @@ export default function RoomHeatmap({ semesters, rooms }: Props) {
 
             {/* Data rows */}
             {allSlots.map(slot => (
-              <>
-                <div key={`label-${slot}`} className="text-xs text-gray-400 pr-2 text-right flex items-center justify-end">
+              <Fragment key={slot}>
+                <div className="text-xs text-gray-500 pr-2 text-right flex items-center justify-end">
                   {slot.endsWith(':00') ? slot : ''}
                 </div>
                 {DAYS.map(day => {
@@ -162,7 +162,7 @@ export default function RoomHeatmap({ semesters, rooms }: Props) {
                     />
                   )
                 })}
-              </>
+              </Fragment>
             ))}
           </div>
         </div>

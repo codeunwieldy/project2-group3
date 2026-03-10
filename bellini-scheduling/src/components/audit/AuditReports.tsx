@@ -122,13 +122,13 @@ export default function AuditReports({ semesters }: Props) {
       </div>
 
       {loading && (
-        <div className="flex items-center gap-2 text-gray-400 text-sm">
+        <div className="flex items-center gap-2 text-gray-500 text-sm">
           <Spinner size="sm" /> Running audit...
         </div>
       )}
 
       {!loading && data === null && (
-        <div className="text-center text-gray-400 py-12">
+        <div className="text-center text-gray-500 py-12">
           Select a semester and click "Run Audit" to view results.
         </div>
       )}
@@ -214,11 +214,11 @@ function OverlapTable({ rows, type }: { rows: Overlap[]; type: 'room' | 'instruc
             <tr key={i} className="hover:bg-gray-50">
               <td className="px-4 py-3">
                 <span className="font-medium">{row.section_a_code}</span>
-                <span className="text-gray-400 ml-1 text-xs">{row.course_a}</span>
+                <span className="text-gray-500 ml-1 text-xs">{row.course_a}</span>
               </td>
               <td className="px-4 py-3">
                 <span className="font-medium">{row.section_b_code}</span>
-                <span className="text-gray-400 ml-1 text-xs">{row.course_b}</span>
+                <span className="text-gray-500 ml-1 text-xs">{row.course_b}</span>
               </td>
               <td className="px-4 py-3 text-gray-600">{type === 'room' ? row.room : row.instructor}</td>
               <td className="px-4 py-3 font-mono text-xs">{row.days}</td>

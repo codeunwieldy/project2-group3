@@ -32,7 +32,7 @@ export default function TARatioTable({ data }: Props) {
           <div className="flex items-center gap-2 mb-3">
             <h3 className="font-semibold text-red-700">Flagged Sections</h3>
             <Badge variant="danger">{flagged.length}</Badge>
-            <span className="text-xs text-gray-400">(below 0.1 hrs/student threshold)</span>
+            <span className="text-xs text-gray-500">(below 0.1 hrs/student threshold)</span>
           </div>
           <RatioTable rows={flagged} />
         </div>

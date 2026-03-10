@@ -5,7 +5,7 @@ interface Props {
 
 export default function TrendArrow({ direction, pct }: Props) {
   if (direction === 'flat' || pct === null) {
-    return <span className="text-gray-400 font-mono text-xs">—</span>
+    return <span className="text-gray-500 font-mono text-xs">—</span>
   }
 
   const isUp = direction === 'up'

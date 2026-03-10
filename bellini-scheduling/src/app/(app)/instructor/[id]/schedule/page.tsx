@@ -54,7 +54,7 @@ export default async function InstructorSchedulePage({ params }: { params: { id:
         <h2 className="text-xl font-bold text-gray-900">{instructor.full_name}</h2>
         <p className="text-sm text-gray-500 mt-0.5">
           Multi-semester teaching schedule
-          {instructor.email && <span className="ml-2 text-gray-400">· {instructor.email}</span>}
+          {instructor.email && <span className="ml-2 text-gray-500">· {instructor.email}</span>}
         </p>
       </div>
       <InstructorCalendar sections={sections} instructorName={instructor.full_name ?? ''} />

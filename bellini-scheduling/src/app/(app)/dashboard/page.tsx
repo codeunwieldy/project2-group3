@@ -115,7 +115,7 @@ export default async function DashboardPage() {
             <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">
               {link.label}
             </p>
-            <p className="text-xs text-gray-400 mt-1">{link.description}</p>
+            <p className="text-xs text-gray-500 mt-1">{link.description}</p>
           </Link>
         ))}
       </div>

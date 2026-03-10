@@ -5,10 +5,11 @@ import SectionTable from '@/components/sections/SectionTable'
 import SemesterFilter from '@/components/sections/SemesterFilter'
 
 interface Props {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function SectionsPage({ searchParams }: Props) {
+  const params = await searchParams
   const supabase = await createClient()
 
   const { data: semesters } = await supabase
@@ -27,8 +28,8 @@ export default async function SectionsPage({ searchParams }: Props) {
     .eq('id', user?.id ?? '')
     .single()
 
-  const semesterId = searchParams.semester_id
-    ? parseInt(String(searchParams.semester_id))
+  const semesterId = params.semester_id
+    ? parseInt(String(params.semester_id))
     : semesters?.[0]?.id
 
   const sections = semesterId

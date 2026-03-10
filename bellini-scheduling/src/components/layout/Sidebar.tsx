@@ -126,7 +126,7 @@ export function Sidebar() {
         </div>
         <div>
           <p className="text-sm font-semibold text-gray-900 leading-tight">Bellini</p>
-          <p className="text-xs text-gray-400 leading-tight">Scheduling</p>
+          <p className="text-xs text-gray-500 leading-tight">Scheduling</p>
         </div>
       </div>
 
@@ -156,7 +156,7 @@ export function Sidebar() {
         {user && (
           <div className="mb-2 px-2">
             <p className="text-xs font-medium text-gray-900 truncate">{user.display_name ?? user.email}</p>
-            <p className="text-xs text-gray-400">{ROLE_LABELS[user.role]}</p>
+            <p className="text-xs text-gray-500">{ROLE_LABELS[user.role]}</p>
           </div>
         )}
         <a

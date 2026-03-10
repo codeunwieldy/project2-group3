@@ -86,15 +86,15 @@ export default function InstructorCalendar({ sections, instructorName }: Props) 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 max-w-md">
         <div className="bg-gray-50 rounded-xl p-3 border border-gray-200">
-          <p className="text-xs text-gray-400">Sections</p>
+          <p className="text-xs text-gray-500">Sections</p>
           <p className="text-xl font-bold">{sections.length}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-3 border border-gray-200">
-          <p className="text-xs text-gray-400">Semesters</p>
+          <p className="text-xs text-gray-500">Semesters</p>
           <p className="text-xl font-bold">{uniqueSemesters.length}</p>
         </div>
         <div className="bg-gray-50 rounded-xl p-3 border border-gray-200">
-          <p className="text-xs text-gray-400">Total Enrolled</p>
+          <p className="text-xs text-gray-500">Total Enrolled</p>
           <p className="text-xl font-bold">{sections.reduce((s, r) => s + (r.enrollment ?? 0), 0)}</p>
         </div>
       </div>
@@ -161,12 +161,12 @@ export default function InstructorCalendar({ sections, instructorName }: Props) 
             <h3 className="text-lg font-bold text-gray-900">{selectedSection.subject_code} {selectedSection.course_number}</h3>
             <p className="text-gray-600 mb-3">{selectedSection.course_title}</p>
             <dl className="space-y-1 text-sm">
-              <div className="flex gap-2"><dt className="text-gray-400 w-28">Section</dt><dd>{selectedSection.section_code}</dd></div>
-              <div className="flex gap-2"><dt className="text-gray-400 w-28">CRN</dt><dd className="font-mono">{selectedSection.crn}</dd></div>
-              <div className="flex gap-2"><dt className="text-gray-400 w-28">Days</dt><dd>{selectedSection.meeting_days ?? '—'}</dd></div>
-              <div className="flex gap-2"><dt className="text-gray-400 w-28">Time</dt><dd>{selectedSection.meeting_times ?? '—'}</dd></div>
-              <div className="flex gap-2"><dt className="text-gray-400 w-28">Room</dt><dd>{selectedSection.room_code ?? '—'}</dd></div>
-              <div className="flex gap-2"><dt className="text-gray-400 w-28">Enrollment</dt><dd>{selectedSection.enrollment ?? '—'}</dd></div>
+              <div className="flex gap-2"><dt className="text-gray-500 w-28">Section</dt><dd>{selectedSection.section_code}</dd></div>
+              <div className="flex gap-2"><dt className="text-gray-500 w-28">CRN</dt><dd className="font-mono">{selectedSection.crn}</dd></div>
+              <div className="flex gap-2"><dt className="text-gray-500 w-28">Days</dt><dd>{selectedSection.meeting_days ?? '—'}</dd></div>
+              <div className="flex gap-2"><dt className="text-gray-500 w-28">Time</dt><dd>{selectedSection.meeting_times ?? '—'}</dd></div>
+              <div className="flex gap-2"><dt className="text-gray-500 w-28">Room</dt><dd>{selectedSection.room_code ?? '—'}</dd></div>
+              <div className="flex gap-2"><dt className="text-gray-500 w-28">Enrollment</dt><dd>{selectedSection.enrollment ?? '—'}</dd></div>
             </dl>
             <button
               onClick={() => setSelectedSection(null)}

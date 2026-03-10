@@ -7,6 +7,8 @@ interface Props {
   id: string
 }
 
+let renderCounter = 0
+
 export default function MermaidDiagram({ chart, id }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [error, setError] = useState<string | null>(null)
@@ -27,7 +29,12 @@ export default function MermaidDiagram({ chart, id }: Props) {
           fontFamily: 'ui-monospace, SFMono-Regular, monospace',
         })
 
-        const { svg } = await mermaid.render(id, chart)
+        // Use a unique render ID each time to avoid DOM collisions
+        // (React strict mode runs effects twice in dev)
+        renderCounter++
+        const renderId = `${id}-${renderCounter}`
+
+        const { svg } = await mermaid.render(renderId, chart)
         if (!cancelled && containerRef.current) {
           containerRef.current.innerHTML = svg
         }
@@ -41,16 +48,14 @@ export default function MermaidDiagram({ chart, id }: Props) {
     }
 
     render()
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+      // Clean up any leftover temp elements mermaid may have created
+      if (containerRef.current) {
+        containerRef.current.innerHTML = ''
+      }
+    }
   }, [chart, id])
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64 text-gray-400 text-sm">
-        Rendering diagram...
-      </div>
-    )
-  }
 
   if (error) {
     return (
@@ -62,10 +67,17 @@ export default function MermaidDiagram({ chart, id }: Props) {
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="overflow-auto p-4 bg-white rounded-xl border border-gray-200"
-      style={{ minHeight: '300px' }}
-    />
+    <div className="relative">
+      {loading && (
+        <div className="flex items-center justify-center h-64 text-gray-500 text-sm">
+          Rendering diagram...
+        </div>
+      )}
+      <div
+        ref={containerRef}
+        className={`overflow-auto p-4 bg-white rounded-xl border border-gray-200 ${loading ? 'hidden' : ''}`}
+        style={{ minHeight: '300px' }}
+      />
+    </div>
   )
 }

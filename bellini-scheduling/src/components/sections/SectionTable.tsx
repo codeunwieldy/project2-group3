@@ -64,7 +64,7 @@ export default function SectionTable({ sections, semesters, activeSemesterId }: 
   }
 
   const SortIcon = ({ col }: { col: string }) => (
-    <span className="ml-1 text-gray-400">
+    <span className="ml-1 text-gray-500">
       {sortKey === col ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
     </span>
   )
@@ -91,7 +91,7 @@ export default function SectionTable({ sections, semesters, activeSemesterId }: 
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <span className="text-xs text-gray-400">{sorted.length} results</span>
+        <span className="text-xs text-gray-500">{sorted.length} results</span>
       </div>
 
       {/* Table */}
@@ -135,7 +135,7 @@ export default function SectionTable({ sections, semesters, activeSemesterId }: 
           <tbody className="divide-y divide-gray-50">
             {sorted.length === 0 ? (
               <tr>
-                <td colSpan={12} className="px-4 py-8 text-center text-gray-400 text-sm">
+                <td colSpan={12} className="px-4 py-8 text-center text-gray-500 text-sm">
                   No sections found.
                 </td>
               </tr>

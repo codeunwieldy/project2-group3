@@ -32,7 +32,7 @@ const SEMESTER_COLORS = [
 export default function CourseTimeline({ sections }: Props) {
   if (sections.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-10 text-center text-gray-400">
+      <div className="bg-white rounded-xl border border-gray-200 p-10 text-center text-gray-500">
         No sections found.
       </div>
     )
@@ -80,11 +80,11 @@ export default function CourseTimeline({ sections }: Props) {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-mono font-medium text-sm">{section.section_code}</span>
-                        <span className="text-xs text-gray-400">CRN {section.crn}</span>
+                        <span className="text-xs text-gray-500">CRN {section.crn}</span>
                       </div>
                       <div className="grid grid-cols-3 gap-3 text-xs text-gray-500">
                         <div>
-                          <span className="text-gray-400">Days/Time:</span>{' '}
+                          <span className="text-gray-500">Days/Time:</span>{' '}
                           <span className="font-medium text-gray-700">
                             {section.meeting_days && section.meeting_times
                               ? `${section.meeting_days} ${section.meeting_times}`
@@ -92,18 +92,18 @@ export default function CourseTimeline({ sections }: Props) {
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-400">Room:</span>{' '}
+                          <span className="text-gray-500">Room:</span>{' '}
                           <span className="font-medium text-gray-700">{section.room_code ?? '—'}</span>
                         </div>
                         <div>
-                          <span className="text-gray-400">Instructor:</span>{' '}
+                          <span className="text-gray-500">Instructor:</span>{' '}
                           <span className="font-medium text-gray-700">{section.instructor_name ?? '—'}</span>
                         </div>
                       </div>
                     </div>
                     {section.enrollment !== null && (
                       <div className="text-right">
-                        <p className="text-xs text-gray-400">Enrolled</p>
+                        <p className="text-xs text-gray-500">Enrolled</p>
                         <p className="font-bold text-gray-800">{section.enrollment}</p>
                       </div>
                     )}
@@ -119,17 +119,17 @@ export default function CourseTimeline({ sections }: Props) {
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <p className="text-2xl font-bold text-gray-900">{sections.length}</p>
-          <p className="text-xs text-gray-400 mt-0.5">Total Sections</p>
+          <p className="text-xs text-gray-500 mt-0.5">Total Sections</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <p className="text-2xl font-bold text-gray-900">{semesters.length}</p>
-          <p className="text-xs text-gray-400 mt-0.5">Semesters Offered</p>
+          <p className="text-xs text-gray-500 mt-0.5">Semesters Offered</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
           <p className="text-2xl font-bold text-gray-900">
             {sections.reduce((s, r) => s + (r.enrollment ?? 0), 0)}
           </p>
-          <p className="text-xs text-gray-400 mt-0.5">Total Enrolled</p>
+          <p className="text-xs text-gray-500 mt-0.5">Total Enrolled</p>
         </div>
       </div>
     </div>

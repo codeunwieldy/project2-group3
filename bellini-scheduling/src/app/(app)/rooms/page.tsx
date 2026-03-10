@@ -36,7 +36,7 @@ export default async function RoomsPage() {
           <tbody className="divide-y divide-gray-100">
             {rooms.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-10 text-center text-gray-400">
+                <td colSpan={5} className="px-4 py-10 text-center text-gray-500">
                   No rooms found.
                 </td>
               </tr>

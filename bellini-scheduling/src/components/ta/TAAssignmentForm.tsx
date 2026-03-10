@@ -101,7 +101,7 @@ export default function TAAssignmentForm({ section, existingAssignments, availab
         <h3 className="font-semibold text-gray-800 mb-3">
           {section.section_code} — {section.course_title}
         </h3>
-        <p className="text-xs text-gray-400">CRN: {section.crn}</p>
+        <p className="text-xs text-gray-500">CRN: {section.crn}</p>
       </div>
 
       {assignments.length > 0 && (
@@ -151,7 +151,7 @@ export default function TAAssignmentForm({ section, existingAssignments, availab
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         <h4 className="font-medium text-gray-700 text-sm mb-4">Add TA Assignment</h4>
         {unassignedTAs.length === 0 ? (
-          <p className="text-sm text-gray-400">All available TAs are already assigned to this section.</p>
+          <p className="text-sm text-gray-500">All available TAs are already assigned to this section.</p>
         ) : (
           <form onSubmit={handleAdd} className="flex items-end gap-3">
             <div>
