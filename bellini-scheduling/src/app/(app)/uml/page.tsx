@@ -412,6 +412,672 @@ classDiagram
   User "0..1" --> "0..1" Instructor : linked to
 `
 
+// ─── IOD Diagrams ─────────────────────────────────────────────────────────────
+
+const IOD_1 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate User"]
+    A --> B["UC-Browse Sections: View Sections with TA Ratios"]
+    B --> C["UC-02: Assign TA to Section"]
+    C --> D{Ratio Threshold Exceeded?}
+    D -->|No| E["UC-Save Assignment: Persist TAAssignment"]
+    D -->|Yes| F["UC-Warn: Display Over-Threshold Warning"]
+    F --> G{Coordinator Decision}
+    G -->|Override| E
+    G -->|Cancel| C
+    E --> H["UC-Notify TA: Queue Email Notification"]
+    H --> I["UC-Refresh: Update TA Ratio Table"]
+    I --> e([End])
+`
+
+const IOD_2 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate User"]
+    A --> B["UC-03: Compare Enrollment Trends"]
+    B --> C{Apply Filter?}
+    C -->|Yes| D["UC-Filter: Apply Subject or Campus Filter"]
+    D --> E{Sort Column?}
+    C -->|No| E
+    E -->|Yes| F["UC-Sort: Order Rows by Column"]
+    F --> G["UC-Review: Analyze Enrollment Changes"]
+    E -->|No| G
+    G --> H{Clear Filters?}
+    H -->|Yes| B
+    H -->|No| e([End])
+`
+
+const IOD_3 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate User"]
+    A --> B["UC-01: Manage Course Sections"]
+    B --> C["UC-Filter: Apply Semester and Column Filters"]
+    C --> D{Select Action}
+    D -->|Add| E["UC-Add Section: Open Form and Submit"]
+    D -->|Edit| F["UC-Edit Section: Open Prefilled Form and Submit"]
+    D -->|Delete| G["UC-Delete Section: Show Confirmation Dialog"]
+    E --> V{Input Valid?}
+    V -->|No| E
+    V -->|Yes| H["UC-Audit Log: Record CREATE Entry"]
+    F --> I["UC-Audit Log: Record UPDATE Entry"]
+    G --> K{Confirmed?}
+    K -->|No| C
+    K -->|Yes| L["UC-Audit Log: Record DELETE Entry"]
+    H --> M["UC-Notify: Display Success Toast"]
+    I --> M
+    L --> M
+    M --> N{Another Action?}
+    N -->|Yes| C
+    N -->|No| e([End])
+`
+
+const IOD_4 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate User"]
+    A --> B["UC-04: Generate Workload Report"]
+    B --> C{Apply Semester Filter?}
+    C -->|Yes| D["UC-Filter: Scope to Selected Semester"]
+    D --> E["UC-Review: View On-Screen Workload Summary"]
+    C -->|No| E
+    E --> F{Export Report?}
+    F -->|No| e([End])
+    F -->|PDF| G["UC-Export PDF: Generate via jsPDF"]
+    F -->|Excel| H["UC-Export Excel: Generate via ExcelJS"]
+    G --> I["UC-Download: Stream File to Browser"]
+    H --> I
+    I --> e([End])
+`
+
+const IOD_5 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate User"]
+    A --> B["UC-Select Semester: Choose Target Semester"]
+    B --> C["UC-View Heatmap: Load Weekly Room Utilization"]
+    C --> D{Filter by Building or Room?}
+    D -->|Yes| E["UC-Filter Heatmap: Scope to Room or Building"]
+    E --> F["UC-Identify Underused: Review Unoccupied Blocks"]
+    D -->|No| F
+    F --> G{Room Available for Reassignment?}
+    G -->|Yes| H["UC-Review Waitlisted: Find Sections Without Space"]
+    G -->|No| H
+    H --> I["UC-01: Manage Course Sections (Update Room)"]
+    I --> J["UC-Audit Log: Record UPDATE Entry"]
+    J --> e([End])
+`
+
+const IOD_6 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate User"]
+    A --> B["UC-Identify Instructor: Resolve from Login"]
+    B --> C["UC-View Schedule: Load Multi-Semester Calendar"]
+    C --> D{Semester Filter?}
+    D -->|Yes| E["UC-Filter: Scope to Selected Semester"]
+    E --> F["UC-Review: View Room, Time, Enrollment, TAs"]
+    D -->|No| F
+    F --> G{Conflict Detected?}
+    G -->|Yes| H["UC-Highlight: Flag Overlapping Time or Room"]
+    H --> I["UC-01: Manage Sections (Escalate Conflict)"]
+    I --> J["UC-Plan Workload: Review Semester Commitments"]
+    G -->|No| J
+    J --> e([End])
+`
+
+const IOD_7 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate User"]
+    A --> B["UC-Search: Enter Subject and Course Number"]
+    B --> C{Results Found?}
+    C -->|No| D["UC-No Results: Display Course Not Found"]
+    D --> B
+    C -->|Yes| E["UC-Timeline: Display Multi-Semester Availability"]
+    E --> F["UC-Enrollment Trends: Show Enrollment vs Capacity"]
+    F --> G["UC-Instructor History: List Instructors by Semester"]
+    G --> H{Apply Semester Filter?}
+    H -->|Yes| I["UC-Filter: Scope to Selected Semesters"]
+    I --> J["UC-Advise: Document Student Recommendations"]
+    H -->|No| J
+    J --> e([End])
+`
+
+const IOD_8 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate as TA or UGTA"]
+    A --> B["UC-Resolve TA: Match Email to tas Table"]
+    B --> C{TA Record Found?}
+    C -->|No| D["UC-Error: Display No TA Profile Found"]
+    D --> e([End])
+    C -->|Yes| E["UC-View Assignments: Display Assigned Sections"]
+    E --> F["UC-Details: Show Course, Semester, Room, Hours"]
+    F --> G{New or Updated Assignment?}
+    G -->|Yes| H["UC-Notification: Receive Email via Edge Function"]
+    H --> I["UC-Refresh: Update My Assignments View"]
+    I --> F
+    G -->|No| J["UC-Manage: Review Total Allocated Hours"]
+    J --> e([End])
+`
+
+const IOD_9 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate User"]
+    A --> B["UC-View Alerts: Load Waitlist Alert Dashboard"]
+    B --> C["UC-Detect: Check waitlist_alerts View"]
+    C --> D{Waitlist Exceeds 20% in Both Semesters?}
+    D -->|No| E["UC-Clear: Display No Active Alerts"]
+    E --> e([End])
+    D -->|Yes| F["UC-Alert: Flag Course with Waitlist Warning"]
+    F --> G{Review Alert Details?}
+    G -->|Yes| H["UC-Details: View Enrollment and Waitlist History"]
+    H --> I{Escalate to Leadership?}
+    I -->|Yes| J["UC-Escalate: Notify Department Leadership"]
+    J --> K["UC-01: Manage Sections (Add or Expand Section)"]
+    K --> e([End])
+    I -->|No| e([End])
+    G -->|No| e([End])
+`
+
+// ─── MOPS Class Diagram (Analysis Level) ─────────────────────────────────────
+
+const CLASS_MOPS = `
+classDiagram
+    class Semester {
+        id
+        code
+        termLabel
+        startDate
+        endDate
+        isActive
+        getSemester()
+        listSemesters()
+        getActive()
+    }
+    class Subject {
+        id
+        code
+        name
+        listSubjects()
+    }
+    class Campus {
+        id
+        code
+        name
+        listCampuses()
+    }
+    class Room {
+        id
+        roomCode
+        building
+        capacity
+        isOnline
+        listRooms()
+        checkConflict()
+    }
+    class Instructor {
+        id
+        email
+        fullName
+        getInstructor()
+        listInstructors()
+        getSchedule()
+    }
+    class User {
+        id
+        email
+        role
+        displayName
+        getRole()
+        isAuthorized()
+    }
+    class Course {
+        id
+        courseNumber
+        title
+        courseLevel
+        listCourses()
+        searchBySubject()
+    }
+    class Section {
+        id
+        crn
+        sectionCode
+        meetingDays
+        meetingTimeStart
+        meetingTimeEnd
+        enrollment
+        waitListActual
+        waitListMax
+        getSections()
+        createSection()
+        updateSection()
+        deleteSection()
+    }
+    class TA {
+        id
+        email
+        fullName
+        taType
+        listTAs()
+        getByEmail()
+    }
+    class TAAssignment {
+        id
+        hours
+        assignedAt
+        assignedBy
+        createAssignment()
+        checkDuplicate()
+        calculateRatio()
+        getBySection()
+        getByTA()
+    }
+    class Notification {
+        id
+        recipientEmail
+        subject
+        body
+        status
+        sentAt
+        queueNotification()
+        markSent()
+    }
+    class AuditLog {
+        id
+        tableName
+        recordId
+        action
+        oldData
+        newData
+        changedAt
+        log()
+        getHistory()
+    }
+    class EnrollmentComparison {
+        courseId
+        subjectCode
+        courseNumber
+        s25Enrollment
+        f25Enrollment
+        pctChange
+        getComparison()
+        filterBySubject()
+    }
+    class InstructorWorkload {
+        instructorId
+        instructorName
+        semesterId
+        sectionCount
+        totalEnrollment
+        totalTAHours
+        getWorkload()
+        filterBySemester()
+    }
+
+    Section "*" --> "1" Semester : belongsTo
+    Section "*" --> "1" Course : covers
+    Section "*" --> "0..1" Instructor : taughtBy
+    Section "*" --> "0..1" Room : scheduledIn
+    Section "*" --> "0..1" Campus : locatedAt
+    Course "*" --> "1" Subject : categorizedUnder
+    User "0..1" --> "0..1" Instructor : linkedTo
+    TAAssignment "*" --> "1" Section : assignedTo
+    TAAssignment "*" --> "1" TA : performedBy
+    Notification "0..1" --> "1" TAAssignment : triggeredBy
+    AuditLog "*" --> "1" User : recordedBy
+    InstructorWorkload ..> Section : derives
+    InstructorWorkload ..> TAAssignment : aggregates
+    EnrollmentComparison ..> Section : derives
+    EnrollmentComparison ..> Course : summarizes
+`
+
+// ─── MOSS Class Diagram (Design Level) ───────────────────────────────────────
+
+const CLASS_MOSS = `
+classDiagram
+    class SectionsPage {
+        -sections : SectionRow[]
+        -semesterId : number
+        -isLoading : boolean
+        +fetchSections(semesterId) void
+        +openAddForm() void
+        +openEditForm(id) void
+        +confirmDelete(id) void
+        +showSuccessToast(msg) void
+    }
+    class TAManagementPage {
+        -sectionRatios : RatioRow[]
+        -selectedSectionId : number
+        +fetchSectionRatios(semesterId) void
+        +openAssignForm(sectionId) void
+        +showRatioWarning(ratio) void
+        +refreshRatioTable() void
+    }
+    class EnrollmentComparisonPage {
+        -enrollmentData : EnrollmentRow[]
+        -subjectFilter : string
+        -sortColumn : string
+        +fetchEnrollmentData() void
+        +applySubjectFilter(subject) void
+        +sortTable(column) void
+        +resetFilters() void
+    }
+    class WorkloadPage {
+        -workloadData : WorkloadRow[]
+        -semesterFilter : number
+        +fetchWorkloadData(semesterId) void
+        +applyFilter(semesterId) void
+        +exportPDF() void
+        +exportExcel() void
+    }
+    class SectionController {
+        -supabase : SupabaseClient
+        +GET(request) NextResponse
+        +POST(request) NextResponse
+        -validateAuth() User
+        -checkRole(role, allowed) boolean
+    }
+    class TAAssignmentController {
+        -supabase : SupabaseClient
+        +GET(request) NextResponse
+        +POST(request) NextResponse
+        -validateAuth() User
+        -checkDuplicate(sectionId, taId) boolean
+        -calculateRatio(sectionId, hours) number
+        -queueNotification(email, assignmentId) void
+    }
+    class EnrollmentController {
+        -supabase : SupabaseClient
+        +GET(request) NextResponse
+    }
+    class WorkloadController {
+        -supabase : SupabaseClient
+        +GET(request) NextResponse
+    }
+    class ExportController {
+        -supabase : SupabaseClient
+        +GET(request) NextResponse
+        -generatePDF(data) Buffer
+        -generateExcel(data) Buffer
+        -streamResponse(buf, name, mime) NextResponse
+    }
+    class Semester {
+        +id : number
+        +termLabel : string
+        +isActive : boolean
+    }
+    class Section {
+        +id : number
+        +semesterId : number
+        +courseId : number
+        +crn : string
+        +sectionCode : string
+        +meetingDays : string
+        +meetingTimeStart : string
+        +meetingTimeEnd : string
+        +enrollment : number
+        +waitListActual : number
+        +waitListMax : number
+        +getSections(supabase, filters) Section[]
+        +createSection(supabase, data) Section
+        +updateSection(supabase, id, data) Section
+        +deleteSection(supabase, id) void
+    }
+    class TA {
+        +id : number
+        +email : string
+        +taType : string
+    }
+    class TAAssignment {
+        +id : number
+        +sectionId : number
+        +taId : number
+        +hours : number
+        +assignedAt : string
+        +assignedBy : string
+        +createAssignment(supabase, data) TAAssignment
+        +getBySection(supabase, sectionId) TAAssignment[]
+        +getByTA(supabase, taId) TAAssignment[]
+    }
+    class AuditLog {
+        +id : number
+        +tableName : string
+        +recordId : number
+        +action : string
+        +changedBy : string
+        +oldData : Json
+        +newData : Json
+        +changedAt : string
+        +log(supabase, entry) AuditLog
+        +getHistory(supabase, table, id) AuditLog[]
+    }
+    class EnrollmentComparison {
+        +courseId : number
+        +subjectCode : string
+        +courseNumber : string
+        +s25Enrollment : number
+        +f25Enrollment : number
+        +pctChange : number
+        +getComparison(supabase) EnrollmentComparison[]
+    }
+    class InstructorWorkload {
+        +instructorId : number
+        +instructorName : string
+        +semesterId : number
+        +sectionCount : number
+        +totalEnrollment : number
+        +totalTAHours : number
+        +getWorkload(supabase, semesterId) InstructorWorkload[]
+    }
+    class Notification {
+        +id : number
+        +recipientEmail : string
+        +subject : string
+        +body : string
+        +status : string
+        +taAssignmentId : number
+        +queueNotification(supabase, data) Notification
+        +markSent(supabase, id) void
+    }
+
+    SectionsPage ..> SectionController : calls
+    TAManagementPage ..> TAAssignmentController : calls
+    EnrollmentComparisonPage ..> EnrollmentController : calls
+    WorkloadPage ..> WorkloadController : calls
+    WorkloadPage ..> ExportController : calls
+    SectionController ..> Section : manages
+    SectionController ..> AuditLog : writes
+    TAAssignmentController ..> TAAssignment : manages
+    TAAssignmentController ..> Notification : queues
+    EnrollmentController ..> EnrollmentComparison : queries
+    WorkloadController ..> InstructorWorkload : queries
+    ExportController ..> InstructorWorkload : reads
+    Section "*" --> "1" Semester
+    TAAssignment "*" --> "1" Section
+    TAAssignment "*" --> "1" TA
+    Notification "0..1" --> "1" TAAssignment
+`
+
+// ─── Sequence Diagrams ────────────────────────────────────────────────────────
+
+const SEQ_1 = `
+sequenceDiagram
+    actor User
+    participant SP as SectionsPage
+    participant SC as SectionController
+    participant Sec as Section
+    participant AL as AuditLog
+    participant DB as Database
+
+    User->>SP: navigate to /sections
+    SP->>SC: GET /api/sections?semester_id
+    SC->>Sec: getSections(supabase, filters)
+    Sec->>DB: SELECT * FROM sections
+    DB-->>Sec: Section[]
+    Sec-->>SC: sections
+    SC-->>SP: 200 OK sections[]
+    SP->>SP: renderSectionTable()
+
+    User->>SP: click Add Section
+    SP->>SP: openAddForm()
+    User->>SP: fillForm and submit
+    SP->>SC: POST /api/sections sectionData
+    SC->>SC: validateAuth()
+    SC->>SC: checkRole(role, allowed)
+
+    alt authorized
+        SC->>Sec: createSection(supabase, data)
+        Sec->>DB: INSERT INTO sections
+        DB-->>Sec: newSection
+        Sec-->>SC: Section
+        SC->>AL: log(supabase, CREATE entry)
+        AL->>DB: INSERT INTO audit_log
+        SC-->>SP: 201 Created newSection
+        SP->>SP: showSuccessToast()
+        SP->>SC: GET /api/sections?semester_id
+        SC-->>SP: 200 OK updatedSections[]
+        SP->>SP: refreshSectionList()
+    else unauthorized
+        SC-->>SP: 403 Forbidden
+        SP->>SP: showErrorMessage()
+    end
+`
+
+const SEQ_2 = `
+sequenceDiagram
+    actor Coord as TACoordinator
+    participant TMP as TAManagementPage
+    participant TAC as TAAssignmentController
+    participant TAA as TAAssignment
+    participant N as Notification
+    participant DB as Database
+
+    Coord->>TMP: navigate to /ta-management
+    TMP->>TAC: GET section_ta_ratios
+    TAC->>DB: SELECT * FROM section_ta_ratios
+    DB-->>TAC: SectionRatio[]
+    TAC-->>TMP: 200 OK ratios[]
+    TMP->>TMP: renderTARatioTable()
+
+    Coord->>TMP: click Assign TA on section
+    TMP->>TAC: GET /api/ta-assignments?section_id
+    TAC->>TAA: getBySection(supabase, sectionId)
+    TAA->>DB: SELECT * FROM ta_assignments
+    DB-->>TAA: assignments[]
+    TAC-->>TMP: 200 OK assignments[]
+    TMP->>TMP: renderAssignmentForm()
+
+    Coord->>TMP: selectTA, enterHours, submit
+    TMP->>TAC: POST /api/ta-assignments
+    TAC->>TAC: validateAuth()
+    TAC->>TAC: checkDuplicate(sectionId, taId)
+    TAC->>DB: SELECT section_ta_ratios
+    DB-->>TAC: ratioData
+
+    alt ratio exceeds threshold
+        TAC-->>TMP: 200 warning over threshold
+        TMP->>TMP: showRatioWarning()
+        Coord->>TMP: confirm override
+    end
+
+    TAC->>TAA: createAssignment(supabase, data)
+    TAA->>DB: UPSERT ta_assignments
+    DB-->>TAA: savedAssignment
+    TAA-->>TAC: TAAssignment
+    TAC->>N: queueNotification(supabase, data)
+    N->>DB: INSERT INTO notifications
+    TAC-->>TMP: 201 Created assignment
+    TMP->>TMP: refreshRatioTable()
+`
+
+const SEQ_3 = `
+sequenceDiagram
+    actor User
+    participant ECP as EnrollmentComparisonPage
+    participant EC as EnrollmentController
+    participant ENV as EnrollmentComparison
+    participant DB as Database
+
+    User->>ECP: navigate to /enrollment
+    ECP->>EC: GET /api/enrollment
+    EC->>ENV: getComparison(supabase)
+    ENV->>DB: SELECT * FROM enrollment_comparison
+    DB-->>ENV: EnrollmentRow[]
+    ENV-->>EC: EnrollmentRow[]
+    EC-->>ECP: 200 OK enrollmentData[]
+    ECP->>ECP: renderComparisonTable()
+    ECP->>ECP: highlightSignificantChanges()
+
+    opt apply subject filter
+        User->>ECP: selectSubjectFilter(subject)
+        ECP->>ECP: applySubjectFilter()
+        ECP->>ECP: renderComparisonTable(filtered)
+    end
+
+    opt sort column
+        User->>ECP: clickColumnHeader(column)
+        ECP->>ECP: sortTable(column)
+        ECP->>ECP: renderComparisonTable(sorted)
+    end
+
+    opt clear filters
+        User->>ECP: resetFilters()
+        ECP->>EC: GET /api/enrollment
+        EC->>ENV: getComparison(supabase)
+        ENV->>DB: SELECT * FROM enrollment_comparison
+        DB-->>ENV: EnrollmentRow[]
+        EC-->>ECP: 200 OK enrollmentData[]
+        ECP->>ECP: renderComparisonTable()
+    end
+`
+
+const SEQ_4 = `
+sequenceDiagram
+    actor Chair as DepartmentChair
+    participant WP as WorkloadPage
+    participant WC as WorkloadController
+    participant EC as ExportController
+    participant IW as InstructorWorkload
+    participant DB as Database
+
+    Chair->>WP: navigate to /workload
+    WP->>WC: GET /api/workload
+    WC->>IW: getWorkload(supabase)
+    IW->>DB: SELECT * FROM instructor_workload
+    DB-->>IW: WorkloadRow[]
+    IW-->>WC: WorkloadRow[]
+    WC-->>WP: 200 OK workload[]
+    WP->>WP: renderWorkloadTable()
+
+    opt semester filter
+        Chair->>WP: applyFilter(semesterId)
+        WP->>WC: GET /api/workload?semester_id
+        WC->>IW: getWorkload(supabase, semesterId)
+        IW->>DB: SELECT filtered instructor_workload
+        DB-->>IW: filteredRows[]
+        WC-->>WP: 200 OK filteredWorkload[]
+        WP->>WP: renderWorkloadTable(filtered)
+    end
+
+    alt export PDF
+        Chair->>WP: exportPDF()
+        WP->>EC: GET /api/export/pdf
+        EC->>IW: getWorkload(supabase)
+        IW->>DB: SELECT * FROM instructor_workload
+        DB-->>IW: WorkloadRow[]
+        EC->>EC: generatePDF(data)
+        EC->>EC: streamResponse(buffer, pdf, application/pdf)
+        EC-->>WP: 200 stream download
+        WP->>WP: triggerBrowserDownload()
+    else export Excel
+        Chair->>WP: exportExcel()
+        WP->>EC: GET /api/export/excel
+        EC->>IW: getWorkload(supabase)
+        IW->>DB: SELECT * FROM instructor_workload
+        DB-->>IW: WorkloadRow[]
+        EC->>EC: generateExcel(data)
+        EC->>EC: streamResponse(buffer, xlsx, application/vnd.ms-excel)
+        EC-->>WP: 200 stream download
+        WP->>WP: triggerBrowserDownload()
+    end
+`
+
 // ─── Use Case Documentation (JSX) ────────────────────────────────────────────
 
 interface UCFlow { step: number; actor: string; action: string }
@@ -971,6 +1637,24 @@ const TABS: Tab[] = [
   { key: 'act4',      label: 'Act: Workload Report',     type: 'mermaid',  chart: ACT_WORKLOAD },
   { key: 'component', label: 'Component Architecture',   type: 'mermaid',  chart: COMPONENT_DIAGRAM },
   { key: 'class',     label: 'Class Diagram',            type: 'mermaid',  chart: CLASS_DIAGRAM },
+  // IODs
+  { key: 'iod1',      label: 'IOD-1: Assign TA',         type: 'mermaid',  chart: IOD_1 },
+  { key: 'iod2',      label: 'IOD-2: Enrollment',        type: 'mermaid',  chart: IOD_2 },
+  { key: 'iod3',      label: 'IOD-3: Manage Sections',   type: 'mermaid',  chart: IOD_3 },
+  { key: 'iod4',      label: 'IOD-4: Workload Report',   type: 'mermaid',  chart: IOD_4 },
+  { key: 'iod5',      label: 'IOD-5: Room Heatmap',      type: 'mermaid',  chart: IOD_5 },
+  { key: 'iod6',      label: 'IOD-6: Instr. Schedule',   type: 'mermaid',  chart: IOD_6 },
+  { key: 'iod7',      label: 'IOD-7: Course Search',     type: 'mermaid',  chart: IOD_7 },
+  { key: 'iod8',      label: 'IOD-8: TA Self-Service',   type: 'mermaid',  chart: IOD_8 },
+  { key: 'iod9',      label: 'IOD-9: Waitlist Alerts',   type: 'mermaid',  chart: IOD_9 },
+  // Class diagrams
+  { key: 'classMOPS', label: 'Classes MOPS',             type: 'mermaid',  chart: CLASS_MOPS },
+  { key: 'classMOSS', label: 'Classes MOSS',             type: 'mermaid',  chart: CLASS_MOSS },
+  // Sequence diagrams
+  { key: 'seq1',      label: 'Seq-1: Manage Sections',   type: 'mermaid',  chart: SEQ_1 },
+  { key: 'seq2',      label: 'Seq-2: Assign TA',         type: 'mermaid',  chart: SEQ_2 },
+  { key: 'seq3',      label: 'Seq-3: Enrollment',        type: 'mermaid',  chart: SEQ_3 },
+  { key: 'seq4',      label: 'Seq-4: Workload Export',   type: 'mermaid',  chart: SEQ_4 },
 ]
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
