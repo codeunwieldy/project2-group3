@@ -73,13 +73,13 @@ function RatioTable({ rows }: { rows: TARatio[] }) {
                 key={row.section_id}
                 className={`hover:bg-gray-50 ${row.below_threshold ? 'bg-red-50' : ''}`}
               >
-                <td className="px-4 py-3 font-mono font-medium">{row.section_code}</td>
+                <td className="px-4 py-3 font-mono font-medium text-gray-900">{row.section_code}</td>
                 <td className="px-4 py-3 text-gray-700 max-w-xs truncate">{row.course_title}</td>
                 <td className="px-4 py-3 text-gray-500 text-xs">{row.semester_label}</td>
                 <td className="px-4 py-3 text-gray-600">{row.instructor_name ?? '—'}</td>
-                <td className="px-4 py-3 text-right">{row.enrollment ?? '—'}</td>
-                <td className="px-4 py-3 text-right font-mono">{row.total_ta_hours}</td>
-                <td className="px-4 py-3 text-right font-mono">
+                <td className="px-4 py-3 text-right text-gray-900">{row.enrollment ?? '—'}</td>
+                <td className="px-4 py-3 text-right font-mono text-gray-900">{row.total_ta_hours}</td>
+                <td className="px-4 py-3 text-right font-mono text-gray-900">
                   {row.hours_per_student != null
                     ? row.hours_per_student.toFixed(2)
                     : '—'}

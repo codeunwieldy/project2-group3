@@ -79,7 +79,7 @@ export default function CourseTimeline({ sections }: Props) {
                   <div key={section.id} className="px-4 py-3 flex items-start gap-4 hover:bg-gray-50">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-mono font-medium text-sm">{section.section_code}</span>
+                        <span className="font-mono font-medium text-sm text-gray-900">{section.section_code}</span>
                         <span className="text-xs text-gray-500">CRN {section.crn}</span>
                       </div>
                       <div className="grid grid-cols-3 gap-3 text-xs text-gray-500">

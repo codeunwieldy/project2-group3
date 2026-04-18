@@ -574,6 +574,30 @@ flowchart TD
     G -->|No| e([End])
 `
 
+const IOD_10 = `
+flowchart TD
+    s([Start]) --> A["UC-Login: Authenticate as Chair or Admin"]
+    A --> B["UC-Select Semester: Choose Term to Audit"]
+    B --> C["UC-Run Audit: Execute Audit Reports"]
+    C --> D{Choose Audit Type}
+    D -->|Duplicate CRNs| E["UC-Detect: get_duplicate_crns RPC"]
+    D -->|Room Overlaps| F["UC-Detect: get_room_overlaps RPC"]
+    D -->|Instructor Overlaps| G["UC-Detect: get_instructor_overlaps RPC"]
+    D -->|Anomalous Times| H["UC-Detect: Scan Sections for Time Anomalies"]
+    E --> I{Any Issues Found?}
+    F --> I
+    G --> I
+    H --> I
+    I -->|No| J["UC-Clear: Display No Issues Found Banner"]
+    J --> e([End])
+    I -->|Yes| K["UC-Display: Render Issue Table with Section Details"]
+    K --> L{Resolve Issue?}
+    L -->|Yes| M["UC-01: Edit Section to Fix Conflict"]
+    M --> C
+    L -->|No| N["UC-Export: Document Outstanding Issues"]
+    N --> e([End])
+`
+
 // ─── MOPS Class Diagram (Analysis Level) ─────────────────────────────────────
 
 const CLASS_MOPS = `
@@ -1625,6 +1649,8 @@ interface Tab {
   label: string
   type: TabType
   chart?: string
+  filename?: string
+  contributor?: string
 }
 
 const TABS: Tab[] = [
@@ -1638,23 +1664,24 @@ const TABS: Tab[] = [
   { key: 'component', label: 'Component Architecture',   type: 'mermaid',  chart: COMPONENT_DIAGRAM },
   { key: 'class',     label: 'Class Diagram',            type: 'mermaid',  chart: CLASS_DIAGRAM },
   // IODs
-  { key: 'iod1',      label: 'IOD-1: Assign TA',         type: 'mermaid',  chart: IOD_1 },
-  { key: 'iod2',      label: 'IOD-2: Enrollment',        type: 'mermaid',  chart: IOD_2 },
-  { key: 'iod3',      label: 'IOD-3: Manage Sections',   type: 'mermaid',  chart: IOD_3 },
-  { key: 'iod4',      label: 'IOD-4: Workload Report',   type: 'mermaid',  chart: IOD_4 },
-  { key: 'iod5',      label: 'IOD-5: Room Heatmap',      type: 'mermaid',  chart: IOD_5 },
-  { key: 'iod6',      label: 'IOD-6: Instr. Schedule',   type: 'mermaid',  chart: IOD_6 },
-  { key: 'iod7',      label: 'IOD-7: Course Search',     type: 'mermaid',  chart: IOD_7 },
-  { key: 'iod8',      label: 'IOD-8: TA Self-Service',   type: 'mermaid',  chart: IOD_8 },
-  { key: 'iod9',      label: 'IOD-9: Waitlist Alerts',   type: 'mermaid',  chart: IOD_9 },
+  { key: 'iod1',      label: 'IOD-1: Assign TA',         type: 'mermaid',  chart: IOD_1,       filename: 'IOD(1)_Pj2_T-03',             contributor: 'Paul' },
+  { key: 'iod2',      label: 'IOD-2: Enrollment',        type: 'mermaid',  chart: IOD_2,       filename: 'IOD(2)_Pj2_T-03',             contributor: 'Paul' },
+  { key: 'iod3',      label: 'IOD-3: Manage Sections',   type: 'mermaid',  chart: IOD_3,       filename: 'IOD(3)_Pj2_T-03',             contributor: 'Torin' },
+  { key: 'iod4',      label: 'IOD-4: Workload Report',   type: 'mermaid',  chart: IOD_4,       filename: 'IOD(4)_Pj2_T-03',             contributor: 'Joshua' },
+  { key: 'iod5',      label: 'IOD-5: Room Heatmap',      type: 'mermaid',  chart: IOD_5,       filename: 'IOD(5)_Pj2_T-03',             contributor: 'Julia' },
+  { key: 'iod6',      label: 'IOD-6: Instr. Schedule',   type: 'mermaid',  chart: IOD_6,       filename: 'IOD(6)_Pj2_T-03',             contributor: 'Julia' },
+  { key: 'iod7',      label: 'IOD-7: Course Search',     type: 'mermaid',  chart: IOD_7,       filename: 'IOD(7)_Pj2_T-03',             contributor: 'Torin' },
+  { key: 'iod8',      label: 'IOD-8: TA Self-Service',   type: 'mermaid',  chart: IOD_8,       filename: 'IOD(8)_Pj2_T-03',             contributor: 'Torin' },
+  { key: 'iod9',      label: 'IOD-9: Waitlist Alerts',   type: 'mermaid',  chart: IOD_9,       filename: 'IOD(9)_Pj2_T-03',             contributor: 'Joshua' },
+  { key: 'iod10',     label: 'IOD-10: Audit Reports',    type: 'mermaid',  chart: IOD_10,      filename: 'IOD(10)_Pj2_T-03',            contributor: 'Team' },
   // Class diagrams
-  { key: 'classMOPS', label: 'Classes MOPS',             type: 'mermaid',  chart: CLASS_MOPS },
-  { key: 'classMOSS', label: 'Classes MOSS',             type: 'mermaid',  chart: CLASS_MOSS },
+  { key: 'classMOPS', label: 'Classes MOPS',             type: 'mermaid',  chart: CLASS_MOPS,  filename: 'Classes_MOPS_Pj2_T-03',        contributor: 'Julia' },
+  { key: 'classMOSS', label: 'Classes MOSS',             type: 'mermaid',  chart: CLASS_MOSS,  filename: 'Classes_MOSS_Pj2_T-03',        contributor: 'Torin' },
   // Sequence diagrams
-  { key: 'seq1',      label: 'Seq-1: Manage Sections',   type: 'mermaid',  chart: SEQ_1 },
-  { key: 'seq2',      label: 'Seq-2: Assign TA',         type: 'mermaid',  chart: SEQ_2 },
-  { key: 'seq3',      label: 'Seq-3: Enrollment',        type: 'mermaid',  chart: SEQ_3 },
-  { key: 'seq4',      label: 'Seq-4: Workload Export',   type: 'mermaid',  chart: SEQ_4 },
+  { key: 'seq1',      label: 'Seq-1: Manage Sections',   type: 'mermaid',  chart: SEQ_1,       filename: 'Sequence(1)_MOSS_Pj2_T-03',    contributor: 'Julia' },
+  { key: 'seq2',      label: 'Seq-2: Assign TA',         type: 'mermaid',  chart: SEQ_2,       filename: 'Sequence(2)_MOSS_Pj2_T-03',    contributor: 'Paul' },
+  { key: 'seq3',      label: 'Seq-3: Enrollment',        type: 'mermaid',  chart: SEQ_3,       filename: 'Sequence(3)_MOSS_Pj2_T-03',    contributor: 'Joshua' },
+  { key: 'seq4',      label: 'Seq-4: Workload Export',   type: 'mermaid',  chart: SEQ_4,       filename: 'Sequence(4)_MOSS_Pj2_T-03',    contributor: 'Joshua' },
 ]
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -1698,7 +1725,7 @@ export default function UMLPage() {
           <UserStoryMapping />
         </>
       ) : (
-        <MermaidDiagram key={active} id={`diagram-${active}`} chart={activeTab.chart!} />
+        <MermaidDiagram key={active} id={`diagram-${active}`} chart={activeTab.chart!} filename={activeTab.filename} contributor={activeTab.contributor} />
       )}
     </div>
   )

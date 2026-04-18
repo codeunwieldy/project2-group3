@@ -83,7 +83,7 @@ export default function MyAssignmentsView({ initialAssignments, userEmail }: Pro
           <tbody className="divide-y divide-gray-100">
             {assignments.map((a) => (
               <tr key={a.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 font-mono font-medium">{a.section.section_code}</td>
+                <td className="px-4 py-3 font-mono font-medium text-gray-900">{a.section.section_code}</td>
                 <td className="px-4 py-3 text-gray-700 max-w-xs truncate">{a.section.course_title}</td>
                 <td className="px-4 py-3">
                   <Badge variant="info">{a.section.semester_label}</Badge>
@@ -94,7 +94,7 @@ export default function MyAssignmentsView({ initialAssignments, userEmail }: Pro
                     : '—'}
                 </td>
                 <td className="px-4 py-3 text-gray-600">{a.section.instructor_name ?? '—'}</td>
-                <td className="px-4 py-3 text-right font-semibold">{a.hours}</td>
+                <td className="px-4 py-3 text-right font-semibold text-gray-900">{a.hours}</td>
                 <td className="px-4 py-3 text-xs text-gray-500">
                   {new Date(a.assigned_at).toLocaleDateString()}
                 </td>

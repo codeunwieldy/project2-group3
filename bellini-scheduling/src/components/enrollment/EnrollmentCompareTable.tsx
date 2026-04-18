@@ -4,8 +4,10 @@ interface EnrollmentRow {
   subject_code: string
   course_number: string
   course_title: string
-  s25_enrollment: number | null
-  f25_enrollment: number | null
+  prior_code: string
+  current_code: string
+  prior_enrollment: number | null
+  current_enrollment: number | null
   pct_change: number | null
 }
 
@@ -22,6 +24,9 @@ export default function EnrollmentCompareTable({ data }: Props) {
     )
   }
 
+  const priorLabel = data[0]?.prior_code ?? 'Prior'
+  const currentLabel = data[0]?.current_code ?? 'Current'
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <div className="overflow-x-auto">
@@ -31,8 +36,8 @@ export default function EnrollmentCompareTable({ data }: Props) {
               <th className="px-4 py-3 text-left">Subject</th>
               <th className="px-4 py-3 text-left">Course #</th>
               <th className="px-4 py-3 text-left">Title</th>
-              <th className="px-4 py-3 text-right">S25 Enrollment</th>
-              <th className="px-4 py-3 text-right">F25 Enrollment</th>
+              <th className="px-4 py-3 text-right">{priorLabel} Enrollment</th>
+              <th className="px-4 py-3 text-right">{currentLabel} Enrollment</th>
               <th className="px-4 py-3 text-right">Change</th>
             </tr>
           </thead>
@@ -48,13 +53,13 @@ export default function EnrollmentCompareTable({ data }: Props) {
               return (
                 <tr key={i} className="hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium text-blue-700">{row.subject_code}</td>
-                  <td className="px-4 py-3 font-mono">{row.course_number}</td>
+                  <td className="px-4 py-3 font-mono text-gray-900">{row.course_number}</td>
                   <td className="px-4 py-3 text-gray-700 max-w-xs truncate">{row.course_title}</td>
-                  <td className="px-4 py-3 text-right font-mono">
-                    {row.s25_enrollment ?? <span className="text-gray-300">—</span>}
+                  <td className="px-4 py-3 text-right font-mono text-gray-900">
+                    {row.prior_enrollment ?? <span className="text-gray-300">—</span>}
                   </td>
-                  <td className="px-4 py-3 text-right font-mono">
-                    {row.f25_enrollment ?? <span className="text-gray-300">—</span>}
+                  <td className="px-4 py-3 text-right font-mono text-gray-900">
+                    {row.current_enrollment ?? <span className="text-gray-300">—</span>}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <TrendArrow direction={direction} pct={row.pct_change} />

@@ -70,7 +70,6 @@ export default async function DashboardPage() {
   const { count: semesterCount } = await supabase
     .from('semesters')
     .select('*', { count: 'exact', head: true })
-    .eq('is_active', true)
 
   return (
     <div>

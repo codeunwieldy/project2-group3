@@ -5,11 +5,13 @@ import { useEffect, useRef, useState } from 'react'
 interface Props {
   chart: string
   id: string
+  filename?: string
+  contributor?: string
 }
 
 let renderCounter = 0
 
-export default function MermaidDiagram({ chart, id }: Props) {
+export default function MermaidDiagram({ chart, id, filename, contributor }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -29,8 +31,6 @@ export default function MermaidDiagram({ chart, id }: Props) {
           fontFamily: 'ui-monospace, SFMono-Regular, monospace',
         })
 
-        // Use a unique render ID each time to avoid DOM collisions
-        // (React strict mode runs effects twice in dev)
         renderCounter++
         const renderId = `${id}-${renderCounter}`
 
@@ -50,7 +50,6 @@ export default function MermaidDiagram({ chart, id }: Props) {
     render()
     return () => {
       cancelled = true
-      // Clean up any leftover temp elements mermaid may have created
       if (containerRef.current) {
         containerRef.current.innerHTML = ''
       }
@@ -66,6 +65,39 @@ export default function MermaidDiagram({ chart, id }: Props) {
     )
   }
 
+  function downloadSVG() {
+    if (!containerRef.current) return
+    const svgEl = containerRef.current.querySelector('svg')
+    if (!svgEl) return
+
+    // Clone so we don't mutate the displayed SVG
+    const clone = svgEl.cloneNode(true) as SVGSVGElement
+
+    // Inject contributor label into top-right of the SVG if provided
+    if (contributor) {
+      const svgWidth = clone.viewBox?.baseVal?.width || clone.clientWidth || 800
+      const padding = 12
+      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+      label.setAttribute('x', String(svgWidth - padding))
+      label.setAttribute('y', '18')
+      label.setAttribute('text-anchor', 'end')
+      label.setAttribute('font-size', '11')
+      label.setAttribute('font-family', 'ui-sans-serif, sans-serif')
+      label.setAttribute('fill', '#1d4ed8')
+      label.textContent = `Contributor: ${contributor}`
+      clone.insertBefore(label, clone.firstChild)
+    }
+
+    const serialized = new XMLSerializer().serializeToString(clone)
+    const blob = new Blob([serialized], { type: 'image/svg+xml' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${filename}.svg`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="relative">
       {loading && (
@@ -73,11 +105,30 @@ export default function MermaidDiagram({ chart, id }: Props) {
           Rendering diagram...
         </div>
       )}
-      <div
-        ref={containerRef}
-        className={`overflow-auto p-4 bg-white rounded-xl border border-gray-200 ${loading ? 'hidden' : ''}`}
-        style={{ minHeight: '300px' }}
-      />
+      <div className={`relative ${loading ? 'hidden' : ''}`}>
+        <div
+          ref={containerRef}
+          className="overflow-auto p-4 bg-white rounded-xl border border-gray-200"
+          style={{ minHeight: '300px' }}
+        />
+        {contributor && (
+          <div className="absolute top-3 right-6 pointer-events-none">
+            <span className="text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded px-2 py-0.5">
+              Contributor: {contributor}
+            </span>
+          </div>
+        )}
+      </div>
+      {!loading && !error && filename && (
+        <div className="mt-2 flex justify-end">
+          <button
+            onClick={downloadSVG}
+            className="px-3 py-1.5 text-xs font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Download {filename}.svg
+          </button>
+        </div>
+      )}
     </div>
   )
 }

@@ -86,13 +86,13 @@ export default function WorkloadReport({ data }: Props) {
             <tbody className="divide-y divide-gray-100">
               {data.map((row, i) => (
                 <tr key={i} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{row.instructor_name ?? '—'}</td>
+                  <td className="px-4 py-3 font-medium text-gray-900">{row.instructor_name ?? '—'}</td>
                   <td className="px-4 py-3 text-gray-500 text-xs">{row.semester_label}</td>
-                  <td className="px-4 py-3 text-right font-mono">{row.section_count}</td>
-                  <td className="px-4 py-3 text-right font-mono">
+                  <td className="px-4 py-3 text-right font-mono text-gray-900">{row.section_count}</td>
+                  <td className="px-4 py-3 text-right font-mono text-gray-900">
                     {row.total_enrollment ?? <span className="text-gray-300">—</span>}
                   </td>
-                  <td className="px-4 py-3 text-right font-mono">{row.total_ta_hours}</td>
+                  <td className="px-4 py-3 text-right font-mono text-gray-900">{row.total_ta_hours}</td>
                   <td className="px-4 py-3 text-right font-mono text-gray-500">
                     {row.total_enrollment && row.section_count > 0
                       ? (row.total_enrollment / row.section_count).toFixed(1)

@@ -15,7 +15,6 @@ export default async function SectionsPage({ searchParams }: Props) {
   const { data: semesters } = await supabase
     .from('semesters')
     .select('id, code, term_label')
-    .eq('is_active', true)
     .order('id', { ascending: false })
 
   // Get the user's role to show/hide create button

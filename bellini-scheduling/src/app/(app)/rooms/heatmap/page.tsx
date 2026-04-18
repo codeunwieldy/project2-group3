@@ -8,7 +8,6 @@ export default async function RoomHeatmapPage() {
   const { data: semesters } = await supabase
     .from('semesters')
     .select('id, code, term_label')
-    .eq('is_active', true)
     .order('id', { ascending: false })
 
   const rooms = await getRooms(supabase)

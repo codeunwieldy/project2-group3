@@ -213,16 +213,16 @@ function OverlapTable({ rows, type }: { rows: Overlap[]; type: 'room' | 'instruc
           {rows.map((row, i) => (
             <tr key={i} className="hover:bg-gray-50">
               <td className="px-4 py-3">
-                <span className="font-medium">{row.section_a_code}</span>
+                <span className="font-medium text-gray-900">{row.section_a_code}</span>
                 <span className="text-gray-500 ml-1 text-xs">{row.course_a}</span>
               </td>
               <td className="px-4 py-3">
-                <span className="font-medium">{row.section_b_code}</span>
+                <span className="font-medium text-gray-900">{row.section_b_code}</span>
                 <span className="text-gray-500 ml-1 text-xs">{row.course_b}</span>
               </td>
               <td className="px-4 py-3 text-gray-600">{type === 'room' ? row.room : row.instructor}</td>
-              <td className="px-4 py-3 font-mono text-xs">{row.days}</td>
-              <td className="px-4 py-3 font-mono text-xs">{row.time_start}–{row.time_end}</td>
+              <td className="px-4 py-3 font-mono text-xs text-gray-700">{row.days}</td>
+              <td className="px-4 py-3 font-mono text-xs text-gray-700">{row.time_start}–{row.time_end}</td>
             </tr>
           ))}
         </tbody>
@@ -251,9 +251,9 @@ function UnreasonableTimesTable({ rows }: { rows: UnreasonableTime[] }) {
           {rows.map((row, i) => (
             <tr key={i} className="hover:bg-gray-50">
               <td className="px-4 py-3 font-mono text-orange-700">{row.crn}</td>
-              <td className="px-4 py-3 font-medium">{row.section_code}</td>
+              <td className="px-4 py-3 font-medium text-gray-900">{row.section_code}</td>
               <td className="px-4 py-3 text-gray-600">{row.course_title}</td>
-              <td className="px-4 py-3 font-mono text-xs">{row.meeting_times}</td>
+              <td className="px-4 py-3 font-mono text-xs text-gray-700">{row.meeting_times}</td>
               <td className="px-4 py-3">
                 <Badge variant="warning">{row.issue}</Badge>
               </td>
