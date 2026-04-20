@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import Link from 'next/link'
 import type { DayCode } from '@/lib/utils/days'
+import DeleteSectionButton from '@/components/sections/DeleteSectionButton'
 
 export default async function SectionDetailPage({
   params,
@@ -15,6 +16,12 @@ export default async function SectionDetailPage({
   const { id } = await params
   const supabase = await createClient()
   const section = await getSectionById(supabase, parseInt(id))
+
+  const { data: { user } } = await supabase.auth.getUser()
+  const { data: profile } = user
+    ? await supabase.from('users').select('role').eq('id', user.id).single()
+    : { data: null }
+  const canDelete = ['admin', 'chair'].includes(profile?.role ?? '')
 
   if (!section) {
     return (
@@ -68,6 +75,12 @@ export default async function SectionDetailPage({
           >
             Edit
           </Link>
+          {canDelete && (
+            <DeleteSectionButton
+              sectionId={parseInt(id)}
+              sectionLabel={`CRN ${section.crn}`}
+            />
+          )}
         </div>
       </div>
 
