@@ -25,7 +25,7 @@ const ROLE_QUICK_LINKS: Record<UserRole, { href: string; label: string; descript
     { href: '/sections', label: 'Sections', description: 'Browse class sections' },
   ],
   dept_advisor: [
-    { href: '/enrollment', label: 'Enrollment Trends', description: 'Compare S25 vs F25 enrollment' },
+    { href: '/enrollment', label: 'Enrollment Trends', description: 'Compare F25 vs S26 enrollment' },
     { href: '/course-search', label: 'Course Search', description: 'Multi-semester course lookup' },
   ],
   facilities: [
@@ -33,6 +33,7 @@ const ROLE_QUICK_LINKS: Record<UserRole, { href: string; label: string; descript
     { href: '/sections', label: 'Sections', description: 'Browse sections by room' },
   ],
   instructor: [
+    { href: '/my-schedule', label: 'My Schedule', description: 'Your personalized weekly teaching schedule' },
     { href: '/sections', label: 'All Sections', description: 'Browse course sections' },
   ],
   ta_ugta: [

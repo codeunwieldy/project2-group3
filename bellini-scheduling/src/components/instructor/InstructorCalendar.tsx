@@ -51,6 +51,22 @@ function minutesToPct(minutes: number): number {
 export default function InstructorCalendar({ sections, instructorName }: Props) {
   const [selectedSection, setSelectedSection] = useState<SectionBlock | null>(null)
 
+  if (sections.length === 0) {
+    return (
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+        <p className="font-medium text-blue-900">No sections assigned</p>
+        <p className="text-sm text-blue-700 mt-1">
+          {instructorName
+            ? `${instructorName} is not currently assigned to any sections in the imported semesters (S25 / F25 / S26).`
+            : 'No sections are assigned to this instructor in any imported semester (S25 / F25 / S26).'}
+        </p>
+        <p className="text-xs text-blue-600 mt-2">
+          Once a section is assigned to this instructor in the database, it will appear here automatically.
+        </p>
+      </div>
+    )
+  }
+
   // Assign colors to semesters
   const semesterCodes = [...new Set(sections.map(s => s.semester_code))]
   semesterCodes.forEach((code, i) => {

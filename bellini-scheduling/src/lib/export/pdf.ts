@@ -16,12 +16,11 @@ export function generateWorkloadPDF(
   doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 24)
 
   const columns: PDFColumn[] = [
-    { header: 'Instructor', dataKey: 'full_name' },
-    { header: 'Email', dataKey: 'email' },
-    { header: 'Semester', dataKey: 'term_label' },
-    { header: 'Sections', dataKey: 'total_sections' },
-    { header: 'Enrolled', dataKey: 'total_enrolled' },
-    { header: 'TA Hours', dataKey: 'total_ta_hours_supervised' },
+    { header: 'Instructor', dataKey: 'instructor_name' },
+    { header: 'Semester', dataKey: 'semester_label' },
+    { header: 'Sections', dataKey: 'section_count' },
+    { header: 'Enrolled', dataKey: 'total_enrollment' },
+    { header: 'TA Hours', dataKey: 'total_ta_hours' },
   ]
 
   autoTable(doc, {

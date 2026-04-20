@@ -90,6 +90,12 @@ const NAV_ITEMS: NavItem[] = [
     roles: ['admin', 'chair', 'ta_coordinator'],
   },
   {
+    href: '/my-schedule',
+    label: 'My Schedule',
+    icon: <Calendar size={18} />,
+    roles: ['admin', 'instructor'],
+  },
+  {
     href: '/uml',
     label: 'UML Diagrams',
     icon: <GitBranch size={18} />,
@@ -106,16 +112,6 @@ export function Sidebar() {
   const visibleItems = user
     ? NAV_ITEMS.filter((item) => item.roles.includes(user.role))
     : []
-
-  // Instructor route
-  if (user?.role === 'instructor' && user.instructor_id) {
-    visibleItems.push({
-      href: `/instructor/${user.instructor_id}/schedule`,
-      label: 'My Schedule',
-      icon: <Calendar size={18} />,
-      roles: ['instructor'],
-    })
-  }
 
   return (
     <aside className="fixed left-0 top-0 h-full w-56 bg-white border-r border-gray-200 flex flex-col z-30">

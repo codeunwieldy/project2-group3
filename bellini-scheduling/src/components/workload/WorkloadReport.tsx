@@ -52,7 +52,12 @@ export default function WorkloadReport({ data }: Props) {
       {/* Export buttons */}
       <div className="flex gap-3">
         <button
-          onClick={() => exportPDF({ data, title: 'Instructor Workload Report' }, 'workload-report.pdf')}
+          onClick={() =>
+            exportPDF(
+              { data, title: 'Instructor Workload Report' },
+              'workload-report.pdf'
+            )
+          }
           disabled={exporting}
           className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50"
         >
@@ -60,7 +65,27 @@ export default function WorkloadReport({ data }: Props) {
           Export PDF
         </button>
         <button
-          onClick={() => exportExcel({ sheets: [{ name: 'Workload', rows: data }], filename: 'workload-report' }, 'workload-report.xlsx')}
+          onClick={() =>
+            exportExcel(
+              {
+                sheets: [
+                  {
+                    name: 'Workload',
+                    columns: [
+                      { header: 'Instructor', key: 'instructor_name', width: 28 },
+                      { header: 'Semester', key: 'semester_label', width: 18 },
+                      { header: 'Sections', key: 'section_count', width: 12 },
+                      { header: 'Total Enrolled', key: 'total_enrollment', width: 16 },
+                      { header: 'TA Hours', key: 'total_ta_hours', width: 12 },
+                    ],
+                    rows: data as unknown as Record<string, string | number | null | undefined>[],
+                  },
+                ],
+                filename: 'workload-report',
+              },
+              'workload-report.xlsx'
+            )
+          }
           disabled={exporting}
           className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 disabled:opacity-50"
         >

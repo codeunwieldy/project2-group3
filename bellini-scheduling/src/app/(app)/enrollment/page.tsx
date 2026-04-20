@@ -11,7 +11,7 @@ export default async function EnrollmentPage() {
       <div className="mb-6">
         <h2 className="text-xl font-bold text-gray-900">Enrollment Trends</h2>
         <p className="text-sm text-gray-500 mt-0.5">
-          Semester-over-semester enrollment comparison with % change
+          F25 vs S26 enrollment comparison with % change
         </p>
       </div>
       <EnrollmentCompareTable data={data} />
