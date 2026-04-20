@@ -3,7 +3,11 @@ import { createClient } from '@/lib/supabase/server'
 import { getTAAssignmentsForSection } from '@/lib/queries/ta-assignments'
 import TAAssignmentForm from '@/components/ta/TAAssignmentForm'
 
-export default async function TAManagementSectionPage({ params }: { params: { sectionId: string } }) {
+export default async function TAManagementSectionPage({
+  params,
+}: {
+  params: Promise<{ sectionId: string }>
+}) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -14,7 +18,8 @@ export default async function TAManagementSectionPage({ params }: { params: { se
     redirect('/dashboard')
   }
 
-  const sectionId = parseInt(params.sectionId)
+  const { sectionId: sectionIdParam } = await params
+  const sectionId = parseInt(sectionIdParam)
 
   const { data: section } = await supabase
     .from('sections')
@@ -67,7 +72,6 @@ export default async function TAManagementSectionPage({ params }: { params: { se
         section={simplifiedSection}
         existingAssignments={assignments}
         availableTAs={(allTAs ?? []) as Parameters<typeof TAAssignmentForm>[0]['availableTAs']}
-        userEmail={user.email ?? ''}
       />
     </div>
   )

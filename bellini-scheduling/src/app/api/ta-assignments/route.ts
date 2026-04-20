@@ -110,7 +110,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabase
       .from('ta_assignments')
       .upsert(
-        { section_id, ta_id, hours, assigned_by: user.email, assigned_at: new Date().toISOString() },
+        { section_id, ta_id, hours, assigned_by: user.id, assigned_at: new Date().toISOString() },
         { onConflict: 'section_id,ta_id' }
       )
       .select()

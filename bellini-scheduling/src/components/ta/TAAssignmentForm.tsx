@@ -30,10 +30,9 @@ interface Props {
   section: Section
   existingAssignments: ExistingAssignment[]
   availableTAs: TA[]
-  userEmail: string
 }
 
-export default function TAAssignmentForm({ section, existingAssignments, availableTAs, userEmail }: Props) {
+export default function TAAssignmentForm({ section, existingAssignments, availableTAs }: Props) {
   const [assignments, setAssignments] = useState(existingAssignments)
   const [selectedTA, setSelectedTA] = useState('')
   const [hours, setHours] = useState('')
@@ -54,12 +53,13 @@ export default function TAAssignmentForm({ section, existingAssignments, availab
           section_id: section.id,
           ta_id: parseInt(selectedTA),
           hours: parseFloat(hours),
-          assigned_by: userEmail,
         }),
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error ?? 'Failed to assign TA')
+        setError(data.error ?? `Failed to assign TA (status ${res.status})`)
+      } else if (!data?.id) {
+        setError('Server returned no assignment id. Check RLS policies on ta_assignments.')
       } else {
         const ta = availableTAs.find(t => t.id === parseInt(selectedTA))
         if (ta) {
@@ -75,8 +75,9 @@ export default function TAAssignmentForm({ section, existingAssignments, availab
         setSelectedTA('')
         setHours('')
       }
-    } catch {
-      setError('Network error')
+    } catch (err) {
+      console.error('TA assign error:', err)
+      setError(`Network error: ${(err as Error).message}`)
     }
     setSaving(false)
   }

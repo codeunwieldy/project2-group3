@@ -3,13 +3,14 @@ import { createClient } from '@/lib/supabase/server'
 import { getInstructorSections } from '@/lib/queries/sections'
 import InstructorCalendar from '@/components/instructor/InstructorCalendar'
 
-export default async function InstructorSchedulePage({ params }: { params: { id: string } }) {
+export default async function InstructorSchedulePage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const instructorId = parseInt(params.id)
+  const { id: idParam } = await params
+  const instructorId = parseInt(idParam)
 
   const { data: instructor } = await supabase
     .from('instructors')
